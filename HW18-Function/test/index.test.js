@@ -1,6 +1,6 @@
 'use strict';
 
-// const assert = require('assert');
+const assert = require('assert');
 const sinon = require('sinon');
 const tes = require('../index.js');
 describe('index.js test', function () {
