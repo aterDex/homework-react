@@ -2,8 +2,6 @@
 
 window.addEventListener('DOMContentLoaded', () => {
     initTabWork();
-
-    const now = new Date();
     initTimer(afterDays(1));
 });
 
