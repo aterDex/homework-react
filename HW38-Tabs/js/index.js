@@ -1,6 +1,13 @@
 'use strict';
 
 window.addEventListener('DOMContentLoaded', () => {
+    initTabWork();
+
+    const now = new Date();
+    initTimer(afterDays(1));
+});
+
+function initTabWork() {
 
     const ST_TABHEADER_ITEM_ACTIVE = 'tabheader__item_active';
 
@@ -15,7 +22,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const t = e.target;
         if (t && t.classList.contains('tabheader__item')) {
             let i = 0;
-            for(let e of tabHeaders) {
+            for (let e of tabHeaders) {
                 if (t === e) {
                     hideTabAll();
                     showTab(i);
@@ -34,4 +41,50 @@ window.addEventListener('DOMContentLoaded', () => {
         tabContents[i].hidden = false;
         tabHeaders[i].classList.add(ST_TABHEADER_ITEM_ACTIVE);
     }
-});
+}
+
+function afterDays(days) {
+    const now = new Date();
+    now.setDate(now.getDate() + days);
+    return now;
+}
+
+function initTimer(dateFinish, timeRefresh = 1000) {
+    document.querySelectorAll('.promotion__timeEnd')
+        .forEach(x => x.textContent = `${dateFinish.toLocaleDateString()} в ${dateFinish.toLocaleTimeString()}`);
+
+    showTimeRemaining(getTimeRemaining(dateFinish));
+    startTimer();
+
+    function startTimer() {
+        console.log(`timerStart refresh by ${timeRefresh}`)
+        const timerId = setInterval(() => {
+            const rem = getTimeRemaining(dateFinish);
+            showTimeRemaining(rem);
+            if (!(rem.days || rem.hours || rem.minute || rem.seconds)) {
+                clearInterval(timerId);
+                console.log('timerStop')
+            }
+        }, timeRefresh);
+    }
+
+    function getTimeRemaining(dateFinish) {
+        const t = dateFinish - new Date();
+        if (t < 0) {
+            return {days: 0, hours: 0, minute: 0, seconds: 0};
+        }
+        return {
+            days: Math.floor(t / 86400000),
+            hours: Math.floor((t % 86400000) / 3600000),
+            minute: Math.floor((t % 86400000 % 3600000) / 60000),
+            seconds: Math.floor((t % 86400000 % 3600000 % 60000) / 1000)
+        }
+    }
+
+    function showTimeRemaining(remaining) {
+        document.querySelector('#days').textContent = remaining.days;
+        document.querySelector('#hours').textContent = remaining.hours;
+        document.querySelector('#minutes').textContent = remaining.minute;
+        document.querySelector('#seconds').textContent = remaining.seconds;
+    }
+}
