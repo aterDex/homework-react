@@ -1,3 +1,5 @@
+'use strict';
+
 window.addEventListener('DOMContentLoaded', () => {
 
     const ST_TABHEADER_ITEM_ACTIVE = 'tabheader__item_active';
