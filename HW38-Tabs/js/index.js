@@ -82,9 +82,16 @@ function initTimer(dateFinish, timeRefresh = 1000) {
     }
 
     function showTimeRemaining(remaining) {
-        document.querySelector('#days').textContent = remaining.days;
-        document.querySelector('#hours').textContent = remaining.hours;
-        document.querySelector('#minutes').textContent = remaining.minute;
-        document.querySelector('#seconds').textContent = remaining.seconds;
+        document.querySelector('#days').textContent = getZero(remaining.days);
+        document.querySelector('#hours').textContent = getZero(remaining.hours);
+        document.querySelector('#minutes').textContent = getZero(remaining.minute);
+        document.querySelector('#seconds').textContent = getZero(remaining.seconds);
+    }
+
+    function getZero(num) {
+        if (num >= 0 && num < 10) {
+            return '0' + num;
+        }
+        return num;
     }
 }
