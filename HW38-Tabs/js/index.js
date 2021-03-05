@@ -3,6 +3,7 @@
 window.addEventListener('DOMContentLoaded', () => {
     initTabWork();
     initTimer(afterDays(1));
+    initModal();
 });
 
 function initTabWork() {
@@ -91,5 +92,34 @@ function initTimer(dateFinish, timeRefresh = 1000) {
             return '0' + num;
         }
         return num;
+    }
+}
+
+function initModal() {
+    const modal = document.querySelector('.modal');
+
+    document.querySelectorAll('[data-modal]').forEach(x => x.addEventListener('click', showModal));
+    document.querySelectorAll('[data-modalClose]').forEach(x => x.addEventListener('click', hideModal));
+
+    modal.addEventListener('click', e => {
+        if (e.target === modal) {
+            hideModal();
+        }
+    });
+
+    document.addEventListener('keydown', e => {
+        if (e.code === 'Escape' && !modal.hidden) {
+            hideModal();
+        }
+    });
+
+    function showModal() {
+        modal.hidden = false;
+        document.body.style.overflow = 'hidden';
+    }
+
+    function hideModal() {
+        modal.hidden = true;
+        document.body.style.overflow = '';
     }
 }
