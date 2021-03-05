@@ -100,22 +100,29 @@ function initModal() {
 
     document.querySelectorAll('[data-modal]').forEach(x => x.addEventListener('click', showModal));
     document.querySelectorAll('[data-modalClose]').forEach(x => x.addEventListener('click', hideModal));
-
     modal.addEventListener('click', e => {
         if (e.target === modal) {
             hideModal();
         }
     });
-
     document.addEventListener('keydown', e => {
         if (e.code === 'Escape' && !modal.hidden) {
             hideModal();
         }
     });
+    const showModalTimeout = setTimeout(showModal, 3000);
+    const scrollEvent = () => {
+        if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
+            showModal();
+            window.removeEventListener('scroll', scrollEvent)
+        }
+    };
+    window.addEventListener('scroll', scrollEvent);
 
     function showModal() {
         modal.hidden = false;
         document.body.style.overflow = 'hidden';
+        clearTimeout(showModalTimeout);
     }
 
     function hideModal() {
