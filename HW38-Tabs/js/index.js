@@ -146,9 +146,28 @@ function initMenu() {
         }
     }
 
+    class FoodMenuRender {
+        constructor(foodMenu, parent) {
+            this.foodMenu = foodMenu;
+            this.parent = parent;
+        }
+
+        render() {
+            const c = document.querySelector('#template_menu__item').content;
+            const base = c.cloneNode(true);
+            const img = base.querySelector('.menu__item img');
+            img.src = this.foodMenu.img;
+            img.alt = this.foodMenu.imgAlt;
+            base.querySelector('.menu__item-subtitle').textContent = this.foodMenu.name;
+            base.querySelector('.menu__item-descr').textContent = this.foodMenu.description;
+            base.querySelector('.menu__item-price .menu__item-total span').textContent = this.foodMenu.price;
+            this.parent.appendChild(base);
+        }
+    }
+
     const menuContainer = document.querySelector('.menu__field .container');
     clearMenu();
-    staticMenu().map(createDomForMenu).forEach(x => menuContainer.appendChild(x));
+    staticMenu().map(x => new FoodMenuRender(x, menuContainer)).forEach(x => x.render());
 
     function clearMenu() {
         menuContainer.querySelectorAll('.menu__item').forEach(x => x.remove());
@@ -178,17 +197,5 @@ function initMenu() {
                 'post'
             )
         ]
-    }
-
-    function createDomForMenu(menuContainer) {
-        const c = document.querySelector('#template_menu__item').content;
-        const base = c.cloneNode(true);
-        const img = base.querySelector('.menu__item img');
-        img.src = menuContainer.img;
-        img.alt = menuContainer.imgAlt;
-        base.querySelector('.menu__item-subtitle').textContent = menuContainer.name;
-        base.querySelector('.menu__item-descr').textContent = menuContainer.description;
-        base.querySelector('.menu__item-price .menu__item-total span').textContent = menuContainer.price;
-        return base.firstElementChild;
     }
 }
