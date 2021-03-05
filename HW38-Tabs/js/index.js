@@ -95,7 +95,7 @@ function initTimer(dateFinish, timeRefresh = 1000) {
     }
 }
 
-function initModal() {
+function initModal(timeOut = 30000) {
     const modal = document.querySelector('.modal');
 
     document.querySelectorAll('[data-modal]').forEach(x => x.addEventListener('click', showModal));
@@ -110,7 +110,8 @@ function initModal() {
             hideModal();
         }
     });
-    const showModalTimeout = setTimeout(showModal, 3000);
+    const showModalTimeout = timeOut > 0 ? setTimeout(showModal, timeOut) : undefined;
+
     const scrollEvent = () => {
         if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
             showModal();
@@ -122,7 +123,9 @@ function initModal() {
     function showModal() {
         modal.hidden = false;
         document.body.style.overflow = 'hidden';
-        clearTimeout(showModalTimeout);
+        if (showModalTimeout) {
+            clearTimeout(showModalTimeout);
+        }
     }
 
     function hideModal() {
