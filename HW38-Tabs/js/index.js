@@ -4,6 +4,7 @@ window.addEventListener('DOMContentLoaded', () => {
     initTabWork();
     initTimer(afterDays(1));
     initModal();
+    initMenu();
 });
 
 function initTabWork() {
@@ -131,5 +132,72 @@ function initModal(timeOut = 30000) {
     function hideModal() {
         modal.hidden = true;
         document.body.style.overflow = '';
+    }
+}
+
+function initMenu() {
+    class FoodMenu {
+        constructor(name, description, price, img, imgAlt) {
+            this.name = name;
+            this.description = description;
+            this.price = price;
+            this.img = img;
+            this.imgAlt = imgAlt;
+        }
+    }
+    const menuContainer = document.querySelector('.menu__field .container');
+    clearMenu();
+    staticMenu().map(createDomForMenu).forEach(x => menuContainer.appendChild(x));
+
+    function clearMenu() {
+        menuContainer.querySelectorAll('.menu__item').forEach(x => x.remove());
+    }
+
+    function staticMenu() {
+        return [
+            new FoodMenu(
+                'Меню "Фитнес"',
+                'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
+                229,
+                'img/tabs/vegy.jpg',
+                'vegy'
+            ),
+            new FoodMenu(
+                'Меню “Премиум”',
+                'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан! ',
+                550,
+                'img/tabs/elite.jpg',
+                'elite'
+            ),
+            new FoodMenu(
+                'Меню "Постное"',
+                'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.',
+                430,
+                'img/tabs/post.jpg',
+                'post'
+            )
+        ]
+    }
+
+    function createDomForMenu(menuContainer) {
+        const c = document.querySelector('#template_menu__item').content;
+        const base = c.cloneNode(true);
+        // src="img/tabs/vegy.jpg" alt="vegy"
+        // base.innerHTML = '<img/>' +
+        //     '<h3 className="menu__item-subtitle"/>' +
+        //     '<div className="menu__item-descr"/>' +
+        //     '<div className="menu__item-divider"/>' +
+        //
+        //     '<div className="menu__item-price">' +
+        //     '<div className="menu__item-cost">Цена:</div>' +
+        //     '<div className="menu__item-total"><span></span> грн/день</div>' +
+        //     '</div>';
+        const img = base.querySelector('.menu__item img');
+        img.src = menuContainer.img;
+        img.alt = menuContainer.imgAlt;
+        base.querySelector('.menu__item-subtitle').textContent = menuContainer.name;
+        base.querySelector('.menu__item-descr').textContent = menuContainer.description;
+        base.querySelector('.menu__item-price .menu__item-total span').textContent = menuContainer.price;
+        return base.firstElementChild;
     }
 }
