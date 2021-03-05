@@ -145,6 +145,7 @@ function initMenu() {
             this.imgAlt = imgAlt;
         }
     }
+
     const menuContainer = document.querySelector('.menu__field .container');
     clearMenu();
     staticMenu().map(createDomForMenu).forEach(x => menuContainer.appendChild(x));
@@ -182,16 +183,6 @@ function initMenu() {
     function createDomForMenu(menuContainer) {
         const c = document.querySelector('#template_menu__item').content;
         const base = c.cloneNode(true);
-        // src="img/tabs/vegy.jpg" alt="vegy"
-        // base.innerHTML = '<img/>' +
-        //     '<h3 className="menu__item-subtitle"/>' +
-        //     '<div className="menu__item-descr"/>' +
-        //     '<div className="menu__item-divider"/>' +
-        //
-        //     '<div className="menu__item-price">' +
-        //     '<div className="menu__item-cost">Цена:</div>' +
-        //     '<div className="menu__item-total"><span></span> грн/день</div>' +
-        //     '</div>';
         const img = base.querySelector('.menu__item img');
         img.src = menuContainer.img;
         img.alt = menuContainer.imgAlt;
