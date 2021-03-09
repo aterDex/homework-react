@@ -234,16 +234,17 @@ function initMenu() {
 
 function initSendForm(modal) {
     const forms = document.querySelectorAll('form');
-
+    const pathCallMe = 'callMe2';
     const message = {
         loading: 'icons/spinner.svg',
         success: 'Спасибо! Скоро мы с вами свяжемся',
         failure: 'Что-то пошло не так...'
     };
 
-    forms.forEach(x => postData(x, callBackRequestByJson));
+    forms.forEach(x => postDataOverFetchFormData(x, callBackRequestByJson));
+    // forms.forEach(x => postDataOverXMLHttpRequest(x, callBackRequestByJson));
 
-    function postData(form, callBackRequest) {
+    function postDataOverXMLHttpRequest(form, callBackRequest) {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             const img = document.createElement('img');
@@ -251,7 +252,9 @@ function initSendForm(modal) {
             img.style.cssText = 'display: block; margin: 0 auto;';
             form.insertAdjacentElement('afterend', img);
 
+            const mes = callBackRequest(form);
             const request = new XMLHttpRequest();
+
             request.addEventListener('load', () => {
                 console.log(request.response);
                 if (request.status === 200) {
@@ -262,23 +265,61 @@ function initSendForm(modal) {
                 }
                 img.remove();
             });
-            callBackRequest(form, request);
+
+            request.open('POST', mes.path);
+            if (mes.headers) {
+                for (let key in mes.headers) {
+                    request.setRequestHeader(key, mes.headers[key]);
+                }
+            }
+            request.send(mes.body);
         })
     }
 
-    function callBackRequestByFormData(form, request) {
-        request.open('POST', 'callMe')
-        request.send(new FormData(form));
+    function postDataOverFetchFormData(form, callBackRequest) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const img = document.createElement('img');
+            img.src = message.loading;
+            img.style.cssText = 'display: block; margin: 0 auto;';
+            form.insertAdjacentElement('afterend', img);
+
+            const mes = callBackRequest(form);
+
+            fetch(mes.path, {
+                method: "POST",
+                headers: mes.headers,
+                body: mes.body
+            }).then(data => {
+                modal.showText(message.success);
+                form.reset();
+            }).catch(() => {
+                modal.showText(message.failure);
+            }).finally(() => {
+                img.remove();
+            });
+        });
     }
 
-    function callBackRequestByJson(form, request) {
-        request.open('POST', 'callMe')
-        request.setRequestHeader('Content-type', 'application/json');
-        const formData = new FormData(form);
+    function callBackRequestByFormData(form) {
+        return {
+            path: pathCallMe,
+            body: new FormData(form)
+        }
+    }
+
+    function callBackRequestByJson(form) {
         const object = {};
-        formData.forEach(function (val, key) {
-            object[key] = val;
+        new FormData(form).forEach((v, k) => {
+            object[k] = v;
         });
-        request.send(JSON.stringify(object));
+        return {
+            path: pathCallMe,
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(object)
+        }
     }
 }

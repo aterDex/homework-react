@@ -7,6 +7,7 @@ app.use(express.static('public'));
 
 app.post('/callMe', (req, res) => {
     let data = '';
+    console.log(req.headers);
     req.on('data', chunk => {
         data += chunk;
     })
