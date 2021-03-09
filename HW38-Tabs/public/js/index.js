@@ -5,6 +5,7 @@ window.addEventListener('DOMContentLoaded', () => {
     initTimer(afterDays(1));
     initModal();
     initMenu();
+    initSendForm();
 });
 
 function initTabWork() {
@@ -197,5 +198,57 @@ function initMenu() {
                 'post'
             )
         ]
+    }
+}
+
+function initSendForm() {
+    const forms = document.querySelectorAll('form');
+
+    const message = {
+        loading: 'Загрузка',
+        success: 'Спасибо! Скоро мы с вами свяжемся',
+        failure: 'Что-то пошло не так...'
+    };
+
+    forms.forEach(x => postData(x, callBackRequestByJson));
+
+    function postData(form, callBackRequest) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const statusMessage = document.createElement('div');
+            statusMessage.classList.add('status');
+            statusMessage.textContent = message.loading;
+            form.append(statusMessage);
+
+
+            const request = new XMLHttpRequest();
+            request.addEventListener('load', () => {
+                console.log(request.response);
+                if (request.status === 200) {
+                    statusMessage.textContent = message.success;
+                    form.reset();
+                } else {
+                    statusMessage.textContent = message.failure;
+                }
+            });
+            callBackRequest(form, request);
+        })
+    }
+
+    function callBackRequestByFormData(form, request) {
+        request.open('POST', 'callMe')
+        request.send(new FormData(form));
+    }
+
+    function callBackRequestByJson(form, request) {
+        request.open('POST', 'callMe')
+        request.setRequestHeader('Content-type', 'application/json');
+        const formData = new FormData(form);
+        const object = {};
+        formData.forEach(function (val, key) {
+            object[key] = val;
+        });
+        request.send(JSON.stringify(object));
     }
 }
