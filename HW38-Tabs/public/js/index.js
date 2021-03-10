@@ -368,12 +368,24 @@ function initStorage() {
 }
 
 function initSlider() {
-    const slider = document.querySelector('.offer__slider');
-    const current = slider.querySelector('.offer__slider-counter #current');
-    const total = slider.querySelector('.offer__slider-counter #total');
-    const sliderContainer = slider.querySelector('.offer__slider-wrapper');
-    const sliders = sliderContainer.querySelectorAll('.offer__slide');
+    const slider = document.querySelector('.offer__slider'),
+        current = slider.querySelector('.offer__slider-counter #current'),
+        total = slider.querySelector('.offer__slider-counter #total'),
+        sliderContainer = slider.querySelector('.offer__slider-wrapper'),
+        sliders = sliderContainer.querySelectorAll('.offer__slide'),
+        sliderInner = sliderContainer.querySelector('.offer__slider-inner'),
+        width = window.getComputedStyle(sliderContainer).width,
+        widthN = +width.slice(0, -2);
+
     let position = 0;
+
+    sliderInner.style.width = 100 * sliders.length + '%';
+    sliderInner.style.display = 'flex';
+    sliderInner.style.transition = '0.5s all';
+
+    sliderContainer.style.overflow = 'hidden';
+
+    sliders.forEach(x => x.style.width = width);
 
     slider
         .querySelector('.offer__slider-prev')
@@ -382,31 +394,15 @@ function initSlider() {
         .querySelector('.offer__slider-next')
         .addEventListener('click', () => next());
 
-    dropping();
+    total.textContent = getZero(sliders.length);
 
     function next(offset = 1) {
-        sliders[position].hidden = true;
         position = (position + offset) % sliders.length;
-        while (position < 0) {
+        if (position < 0) {
             position = sliders.length + position;
         }
-
-        sliders[position].hidden = false;
-
+        sliderInner.style.transform = `translateX(-${widthN * position}px)`;
         current.textContent = getZero(position + 1);
-    }
-
-    function dropping() {
-        if (sliders.length > 0) {
-            position = 0;
-            sliders.forEach(x => x.hidden = true);
-            sliders[position].hidden = false;
-            current.textContent = getZero(position + 1);
-            total.textContent = getZero(sliders.length);
-        } else {
-            current.textContent = '00';
-            total.textContent = '00';
-        }
     }
 }
 
