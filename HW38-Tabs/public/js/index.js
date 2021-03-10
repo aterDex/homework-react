@@ -1,11 +1,12 @@
 'use strict';
 
 window.addEventListener('DOMContentLoaded', () => {
+    const storage = initStorage();
     initTabWork();
     initTimer(afterDays(1));
     const modal = initModal();
-    initMenu();
-    initSendForm(modal);
+    initMenu(storage);
+    initSendForm(modal, storage);
 });
 
 function initTabWork() {
@@ -102,7 +103,7 @@ function initModal(timeOut = 30000) {
     document.querySelectorAll('[data-modal]').forEach(x => x.addEventListener('click', showModal));
 
     modal.addEventListener('click', e => {
-        if (e.target === modal || e.target.getAttribute('data-modalClose') == '') {
+        if (e.target === modal || e.target.getAttribute('data-modalClose') === '') {
             hideModal();
         }
     });
@@ -167,7 +168,9 @@ function initModal(timeOut = 30000) {
     }
 }
 
-function initMenu() {
+function initMenu(storage) {
+    const urlMenu = 'menu';
+
     class FoodMenu {
         constructor(name, description, price, img, imgAlt) {
             this.name = name;
@@ -199,13 +202,25 @@ function initMenu() {
 
     const menuContainer = document.querySelector('.menu__field .container');
     clearMenu();
-    staticMenu().map(x => new FoodMenuRender(x, menuContainer)).forEach(x => x.render());
+    fetchMenu()
+        .then(data => data.map(x => new FoodMenuRender(x, menuContainer)).forEach(x => x.render()))
+        .catch((err) => {
+            console.log(err);
+            clearMenu();
+            new FoodMenuRender(new FoodMenu(
+                'Ошибка',
+                'Ошибка при загрузки меню',
+                0,
+                '',
+                'Ошибка'
+            ), menuContainer).render();
+        });
 
     function clearMenu() {
         menuContainer.querySelectorAll('.menu__item').forEach(x => x.remove());
     }
 
-    function staticMenu() {
+    async function staticMenu() {
         return [
             new FoodMenu(
                 'Меню "Фитнес"',
@@ -230,11 +245,25 @@ function initMenu() {
             )
         ]
     }
+
+    async function fetchMenu() {
+        return storage.getResource(urlMenu).then(data => {
+            return data.menu.map(({img, altimg, title, descr, price}) => {
+                return new FoodMenu(
+                    title,
+                    descr,
+                    price,
+                    img,
+                    altimg
+                );
+            })
+        });
+    }
 }
 
-function initSendForm(modal) {
+function initSendForm(modal, storage) {
     const forms = document.querySelectorAll('form');
-    const pathCallMe = 'callMe2';
+    const pathCallMe = 'callMe';
     const message = {
         loading: 'icons/spinner.svg',
         success: 'Спасибо! Скоро мы с вами свяжемся',
@@ -242,6 +271,7 @@ function initSendForm(modal) {
     };
 
     forms.forEach(x => postDataOverFetchFormData(x, callBackRequestByJson));
+
     // forms.forEach(x => postDataOverXMLHttpRequest(x, callBackRequestByJson));
 
     function postDataOverXMLHttpRequest(form, callBackRequest) {
@@ -269,7 +299,9 @@ function initSendForm(modal) {
             request.open('POST', mes.path);
             if (mes.headers) {
                 for (let key in mes.headers) {
-                    request.setRequestHeader(key, mes.headers[key]);
+                    if (mes.headers.hasOwnProperty(key)) {
+                        request.setRequestHeader(key, mes.headers[key]);
+                    }
                 }
             }
             request.send(mes.body);
@@ -286,19 +318,17 @@ function initSendForm(modal) {
             form.insertAdjacentElement('afterend', img);
 
             const mes = callBackRequest(form);
-
-            fetch(mes.path, {
-                method: "POST",
-                headers: mes.headers,
-                body: mes.body
-            }).then(data => {
-                modal.showText(message.success);
-                form.reset();
-            }).catch(() => {
-                modal.showText(message.failure);
-            }).finally(() => {
-                img.remove();
-            });
+            storage.postData(mes.path, mes.headers, mes.body)
+                .then(data => {
+                    console.log(data);
+                    modal.showText(message.success);
+                    form.reset();
+                })
+                .catch((err) => {
+                    console.log(err);
+                    modal.showText(message.failure);
+                })
+                .finally(() => img.remove());
         });
     }
 
@@ -310,16 +340,35 @@ function initSendForm(modal) {
     }
 
     function callBackRequestByJson(form) {
-        const object = {};
-        new FormData(form).forEach((v, k) => {
-            object[k] = v;
-        });
         return {
             path: pathCallMe,
             headers: {
                 'Content-type': 'application/json'
             },
-            body: JSON.stringify(object)
+            body: JSON.stringify(Object.fromEntries(new FormData(form).entries()))
+        }
+    }
+}
+
+function initStorage() {
+    return {
+        postData: async function (url, headers, body) {
+            const res = await fetch(url, {
+                method: "POST",
+                headers: headers,
+                body: body
+            });
+            if (!res.ok) {
+                throw new Error(`Could not fetch ${url}, status: ${res.status}`);
+            }
+            return await res.json();
+        },
+        getResource: async function (url) {
+            const res = await fetch(url);
+            if (!res.ok) {
+                throw new Error(`Could not fetch ${url}, status: ${res.status}`);
+            }
+            return await res.json();
         }
     }
 }
