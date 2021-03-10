@@ -7,6 +7,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const modal = initModal();
     initMenu(storage);
     initSendForm(modal, storage);
+    initSlider();
 });
 
 function initTabWork() {
@@ -88,13 +89,6 @@ function initTimer(dateFinish, timeRefresh = 1000) {
         document.querySelector('#hours').textContent = getZero(remaining.hours);
         document.querySelector('#minutes').textContent = getZero(remaining.minute);
         document.querySelector('#seconds').textContent = getZero(remaining.seconds);
-    }
-
-    function getZero(num) {
-        if (num >= 0 && num < 10) {
-            return '0' + num;
-        }
-        return num;
     }
 }
 
@@ -371,4 +365,54 @@ function initStorage() {
             return await res.json();
         }
     }
+}
+
+function initSlider() {
+    const slider = document.querySelector('.offer__slider');
+    const current = slider.querySelector('.offer__slider-counter #current');
+    const total = slider.querySelector('.offer__slider-counter #total');
+    const sliderContainer = slider.querySelector('.offer__slider-wrapper');
+    const sliders = sliderContainer.querySelectorAll('.offer__slide');
+    let position = 0;
+
+    slider
+        .querySelector('.offer__slider-prev')
+        .addEventListener('click', () => next(-1));
+    slider
+        .querySelector('.offer__slider-next')
+        .addEventListener('click', () => next());
+
+    dropping();
+
+    function next(offset = 1) {
+        sliders[position].hidden = true;
+        position = (position + offset) % sliders.length;
+        while (position < 0) {
+            position = sliders.length + position;
+        }
+
+        sliders[position].hidden = false;
+
+        current.textContent = getZero(position + 1);
+    }
+
+    function dropping() {
+        if (sliders.length > 0) {
+            position = 0;
+            sliders.forEach(x => x.hidden = true);
+            sliders[position].hidden = false;
+            current.textContent = getZero(position + 1);
+            total.textContent = getZero(sliders.length);
+        } else {
+            current.textContent = '00';
+            total.textContent = '00';
+        }
+    }
+}
+
+function getZero(num) {
+    if (num >= 0 && num < 10) {
+        return '0' + num;
+    }
+    return num;
 }
