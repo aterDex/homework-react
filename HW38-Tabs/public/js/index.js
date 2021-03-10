@@ -375,7 +375,7 @@ function initSlider() {
         slides = sliderContainer.querySelectorAll('.offer__slide'),
         sliderInner = sliderContainer.querySelector('.offer__slider-inner'),
         width = window.getComputedStyle(sliderContainer).width,
-        widthN = +width.slice(0, -2);
+        widthN = +width.replace(/\D/g, '');
     let position = 0;
 
     sliderContainer.style.overflow = 'hidden';
