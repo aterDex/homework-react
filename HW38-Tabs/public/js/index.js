@@ -437,7 +437,8 @@ function initSlider() {
 
 function initCalc() {
     const clChoiceItem = 'calculating__choose-item',
-        clChoiceItemActive = 'calculating__choose-item_active';
+        clChoiceItemActive = 'calculating__choose-item_active',
+        localStorageName = 'calc';
     const calculating = document.querySelector('.calculating'),
         genderChoice = calculating.querySelector('#gender'),
         height = calculating.querySelector('#height'),
@@ -446,26 +447,52 @@ function initCalc() {
         ratioChoice = calculating.querySelector('#ratio'),
         sum = calculating.querySelector('.calculating__result > span');
 
-    initChoice(genderChoice);
-    initChoice(ratioChoice);
-    initInput(height);
-    initInput(weight);
-    initInput(age);
+    const calc = JSON.parse(localStorage.getItem(localStorageName));
+
+    if (calc) {
+        initChoice(genderChoice, calc.gender);
+        initChoice(ratioChoice, calc.ratio);
+        initInput(height, calc.height);
+        initInput(weight, calc.weight);
+        initInput(age, calc.age);
+    } else {
+        initChoice(genderChoice);
+        initChoice(ratioChoice);
+        initInput(height);
+        initInput(weight);
+        initInput(age);
+    }
     reCalc();
 
-    function initChoice(choicer) {
+    function initChoice(choicer, defId) {
         const items = choicer.querySelectorAll('.calculating__choose-item');
+        if (defId) {
+            const def = choicer.querySelector(`#${defId}`);
+            if (def) {
+                clearChoice();
+                def.classList.add(clChoiceItemActive);
+            }
+
+        }
+
         choicer.addEventListener('click', e => {
             const t = e.target;
             if (t.classList.contains(clChoiceItem) && !t.classList.contains(clChoiceItemActive)) {
-                items.forEach(x => x.classList.remove(clChoiceItemActive));
+                clearChoice();
                 t.classList.add(clChoiceItemActive);
                 reCalc();
             }
         });
+
+        function clearChoice() {
+            items.forEach(x => x.classList.remove(clChoiceItemActive));
+        }
     }
 
-    function initInput(input) {
+    function initInput(input, def) {
+        if (def) {
+            input.value = def;
+        }
         input.addEventListener('input', e => {
             if (input.value.match(/\D/)) {
                 input.classList.add('input_error');
@@ -483,12 +510,25 @@ function initCalc() {
     function reCalc() {
         try {
             if (weight.value && height.value && age.value) {
-                const ratio = +getChoice(ratioChoice).getAttribute('data-ratio');
-                if (getChoice(genderChoice).id === 'female') {
-                    sum.textContent = Math.round((447.6 + (9.2 * +weight.value) + (3.1 * +height.value) - (5.7 * +age.value)) * ratio);
+                const rc = getChoice(ratioChoice),
+                    gc = getChoice(genderChoice),
+                    ratio = rc.getAttribute('data-ratio'),
+                    w = +weight.value,
+                    h = +height.value,
+                    a = +age.value;
+                if (gc.id === 'female') {
+                    sum.textContent = Math.round((447.6 + (9.2 * w) + (3.1 * h) - (5.7 * a)) * ratio);
                 } else {
-                    sum.textContent = Math.round((88.36 + (13.4 * +weight.value) + (4.8 * +height.value) - (4.3 * +age.value)) * ratio);
+                    sum.textContent = Math.round((88.36 + (13.4 * w) + (4.8 * h) - (4.3 * a)) * ratio);
                 }
+                localStorage.setItem(localStorageName, JSON.stringify({
+                    gender: gc.id,
+                    ratio: rc.id,
+                    weight: w,
+                    height: h,
+                    age: a
+                }));
+
             } else {
                 sum.textContent = '2700';
             }
