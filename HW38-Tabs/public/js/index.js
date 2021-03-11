@@ -466,7 +466,14 @@ function initCalc() {
     }
 
     function initInput(input) {
-        input.addEventListener('input', e => reCalc());
+        input.addEventListener('input', e => {
+            if (input.value.match(/\D/)) {
+                input.classList.add('input_error');
+            } else {
+                input.classList.remove('input_error');
+            }
+            reCalc();
+        });
     }
 
     function getChoice(choicer) {
