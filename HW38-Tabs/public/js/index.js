@@ -8,6 +8,7 @@ window.addEventListener('DOMContentLoaded', () => {
     initMenu(storage);
     initSendForm(modal, storage);
     initSlider();
+    initCalc();
 });
 
 function initTabWork() {
@@ -432,8 +433,63 @@ function initSlider() {
         dots.forEach(x => x.classList.remove('dot-s'));
         indicators.querySelectorAll(`.dot[data-slide-to='${position}']`).forEach(x => x.classList.add('dot-s'));
     }
+}
 
+function initCalc() {
+    const clChoiceItem = 'calculating__choose-item',
+        clChoiceItemActive = 'calculating__choose-item_active';
+    const calculating = document.querySelector('.calculating'),
+        genderChoice = calculating.querySelector('#gender'),
+        height = calculating.querySelector('#height'),
+        weight = calculating.querySelector('#weight'),
+        age = calculating.querySelector('#age'),
+        ratioChoice = calculating.querySelector('#ratio'),
+        sum = calculating.querySelector('.calculating__result > span');
 
+    initChoice(genderChoice);
+    initChoice(ratioChoice);
+    initInput(height);
+    initInput(weight);
+    initInput(age);
+    reCalc();
+
+    function initChoice(choicer) {
+        const items = choicer.querySelectorAll('.calculating__choose-item');
+        choicer.addEventListener('click', e => {
+            const t = e.target;
+            if (t.classList.contains(clChoiceItem) && !t.classList.contains(clChoiceItemActive)) {
+                items.forEach(x => x.classList.remove(clChoiceItemActive));
+                t.classList.add(clChoiceItemActive);
+                reCalc();
+            }
+        });
+    }
+
+    function initInput(input) {
+        input.addEventListener('input', e => reCalc());
+    }
+
+    function getChoice(choicer) {
+        return choicer.querySelector(`.${clChoiceItemActive}`);
+    }
+
+    function reCalc() {
+        try {
+            if (weight.value && height.value && age.value) {
+                const ratio = +getChoice(ratioChoice).getAttribute('data-ratio');
+                if (getChoice(genderChoice).id === 'female') {
+                    sum.textContent = Math.round((447.6 + (9.2 * +weight.value) + (3.1 * +height.value) - (5.7 * +age.value)) * ratio);
+                } else {
+                    sum.textContent = Math.round((88.36 + (13.4 * +weight.value) + (4.8 * +height.value) - (4.3 * +age.value)) * ratio);
+                }
+            } else {
+                sum.textContent = '2700';
+            }
+        } catch (e) {
+            console.log(e);
+            sum.textContent = '2700';
+        }
+    }
 }
 
 function getZero(num) {
