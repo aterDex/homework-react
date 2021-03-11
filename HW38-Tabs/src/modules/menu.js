@@ -1,6 +1,8 @@
 'use strict';
 
-function initMenu(storage) {
+import {getResource} from'./storage';
+
+function initMenu() {
     const urlMenu = 'menu';
 
     class FoodMenu {
@@ -79,7 +81,7 @@ function initMenu(storage) {
     }
 
     async function fetchMenu() {
-        return storage.getResource(urlMenu).then(data => {
+        return getResource(urlMenu).then(data => {
             return data.menu.map(({img, altimg, title, descr, price}) => {
                 return new FoodMenu(
                     title,

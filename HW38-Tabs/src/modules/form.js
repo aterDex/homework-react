@@ -1,6 +1,8 @@
 'use strict';
 
-function initSendForm(modal, storage) {
+import {postData} from'./storage';
+
+function initSendForm(modal) {
     const forms = document.querySelectorAll('form');
     const pathCallMe = 'callMe';
     const message = {
@@ -57,7 +59,7 @@ function initSendForm(modal, storage) {
             form.insertAdjacentElement('afterend', img);
 
             const mes = callBackRequest(form);
-            storage.postData(mes.path, mes.headers, mes.body)
+            postData(mes.path, mes.headers, mes.body)
                 .then(data => {
                     console.log(data);
                     modal.showText(message.success);
