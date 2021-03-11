@@ -509,13 +509,13 @@ function initCalc() {
 
     function reCalc() {
         try {
-            if (weight.value && height.value && age.value) {
+            const w = +weight.value,
+                h = +height.value,
+                a = +age.value;
+            if (w && h && a) {
                 const rc = getChoice(ratioChoice),
                     gc = getChoice(genderChoice),
-                    ratio = rc.getAttribute('data-ratio'),
-                    w = +weight.value,
-                    h = +height.value,
-                    a = +age.value;
+                    ratio = rc.getAttribute('data-ratio');
                 if (gc.id === 'female') {
                     sum.textContent = Math.round((447.6 + (9.2 * w) + (3.1 * h) - (5.7 * a)) * ratio);
                 } else {
