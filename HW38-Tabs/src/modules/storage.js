@@ -23,4 +23,4 @@ function initStorage() {
     }
 }
 
-module.exports = initStorage;
+export default initStorage;

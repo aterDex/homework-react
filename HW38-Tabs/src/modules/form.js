@@ -89,4 +89,4 @@ function initSendForm(modal, storage) {
     }
 }
 
-module.exports = initSendForm;
+export default initSendForm;

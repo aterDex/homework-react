@@ -70,4 +70,4 @@ function initModal(timeOut = 30000) {
     }
 }
 
-module.exports = initModal;
+export default initModal;

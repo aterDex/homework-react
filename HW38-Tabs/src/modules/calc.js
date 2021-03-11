@@ -104,4 +104,4 @@ function initCalc() {
     }
 }
 
-module.exports = initCalc;
+export default initCalc;

@@ -36,4 +36,4 @@ function initTabWork() {
     }
 }
 
-module.exports = initTabWork;
+export default initTabWork;

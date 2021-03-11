@@ -1,6 +1,6 @@
 'use strict';
 
-const utils = require('./utils');
+import {getZero} from './utils';
 
 function initTimer(dateFinish, timeRefresh = 1000) {
     document.querySelectorAll('.promotion__timeEnd')
@@ -35,11 +35,11 @@ function initTimer(dateFinish, timeRefresh = 1000) {
     }
 
     function showTimeRemaining(remaining) {
-        document.querySelector('#days').textContent = utils.getZero(remaining.days);
-        document.querySelector('#hours').textContent = utils.getZero(remaining.hours);
-        document.querySelector('#minutes').textContent = utils.getZero(remaining.minute);
-        document.querySelector('#seconds').textContent = utils.getZero(remaining.seconds);
+        document.querySelector('#days').textContent = getZero(remaining.days);
+        document.querySelector('#hours').textContent = getZero(remaining.hours);
+        document.querySelector('#minutes').textContent = getZero(remaining.minute);
+        document.querySelector('#seconds').textContent = getZero(remaining.seconds);
     }
 }
 
-module.exports = initTimer;
+export default initTimer;

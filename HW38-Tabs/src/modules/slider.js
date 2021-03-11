@@ -1,6 +1,6 @@
 'use strict';
 
-const utils = require('./utils');
+import {getZero} from './utils';
 
 function initSlider() {
     const slider = document.querySelector('.offer__slider'),
@@ -28,7 +28,7 @@ function initSlider() {
         .querySelector('.offer__slider-next')
         .addEventListener('click', () => next());
     slider.style.position = 'relative';
-    total.textContent = utils.getZero(slides.length);
+    total.textContent = getZero(slides.length);
 
     const indicators = document.createElement('ol');
     indicators.classList.add('carousel-indicators');
@@ -63,10 +63,10 @@ function initSlider() {
             position = slides.length + position;
         }
         sliderInner.style.transform = `translateX(-${widthN * position}px)`;
-        current.textContent = utils.getZero(position + 1);
+        current.textContent = getZero(position + 1);
         dots.forEach(x => x.classList.remove('dot-s'));
         indicators.querySelectorAll(`.dot[data-slide-to='${position}']`).forEach(x => x.classList.add('dot-s'));
     }
 }
 
-module.exports = initSlider;
+export default initSlider;

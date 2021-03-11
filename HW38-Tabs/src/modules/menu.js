@@ -93,4 +93,4 @@ function initMenu(storage) {
     }
 }
 
-module.exports = initMenu;
+export default initMenu;
