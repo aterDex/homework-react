@@ -4,13 +4,17 @@ import Header from '../header';
 import RandomChar from '../randomChar';
 import ItemList from '../itemList';
 import CharDetails from '../charDetails';
+import GotService from "../../services/gotService";
 
 
 const App = () => {
+
+    const gs = new GotService();
+    gs.getCharacter(Math.floor(Math.random() * 100)).then(x => console.log(x));
     return (
-        <> 
+        <>
             <Container>
-                <Header />
+                <Header/>
             </Container>
             <Container>
                 <Row>
@@ -20,10 +24,10 @@ const App = () => {
                 </Row>
                 <Row>
                     <Col md='6'>
-                        <ItemList />
+                        <ItemList/>
                     </Col>
                     <Col md='6'>
-                        <CharDetails />
+                        <CharDetails/>
                     </Col>
                 </Row>
             </Container>
