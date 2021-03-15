@@ -1,6 +1,9 @@
 import React from 'react';
 
-const Header = () => {
+import './header.css';
+import {Button, ButtonToggle} from "reactstrap";
+
+const Header = ({toggleRandomCharacter: toggleRandomCharacter}) => {
     return (
         <div className="headerBlock">
             <h3 className="headerTitle">
@@ -8,6 +11,9 @@ const Header = () => {
                     Game of Thrones DB
                 </a>
             </h3>
+            <ButtonToggle onClick={() => toggleRandomCharacter()}>
+                Toggle random character
+            </ButtonToggle>
             <ul className="headerLinks">
                 <li>
                     <a href="#">Characters</a>

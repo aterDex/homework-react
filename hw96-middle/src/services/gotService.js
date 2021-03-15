@@ -14,7 +14,7 @@ export default class GotService {
         })
             .then(data => {
                 if (!data.ok) {
-                    throw new Error(`result ${data.status}:${data.statusText} fro url '${this.url}'`);
+                    throw new Error(`result ${data.status}:${data.statusText} for url '${this.url}'`);
                 }
                 return data.json();
             })
@@ -38,10 +38,63 @@ export default class GotService {
     }
 
     async getCharacters(prop) {
-        return this._getJson("characters", prop);
+        const chs = await this._getJson("characters", prop);
+        return chs.map(this._transformCharacter);
     }
 
     async getCharacter(num) {
-        return this._getJson(`characters/${num}`);
+        const chs = await this._getJson(`characters/${num}`);
+        return this._transformCharacter(chs);
+    }
+
+    async getHouses(prop) {
+        const chs = await this._getJson("houses", prop);
+        return chs.map(this._transformHouse);
+    }
+
+    async getHouse(num) {
+        const chs = await this._getJson(`houses/${num}`);
+        return this._transformHouse(chs);
+    }
+
+    async getBooks(prop) {
+        const chs = await this._getJson("books", prop);
+        return chs.map(this._transformBook);
+    }
+
+    async getBook(num) {
+        const chs = await this._getJson(`books/${num}`);
+        return this._transformBook(chs);
+    }
+
+
+    _transformCharacter(char) {
+        return {
+            name: char.name ? char.name : "Unknown",
+            gender: char.gender,
+            born: char.born,
+            died: char.died,
+            culture: char.culture
+        }
+    }
+
+    _transformHouse(house) {
+        return {
+            name: house.name,
+            region: house.region,
+            words: house.words,
+            titles: house.titles,
+            overlord: house.overlord,
+            ancestralWeapons: house.ancestralWeapons
+        }
+    }
+
+    _transformBook(book) {
+        return {
+            name: book.name,
+            numberOfPages: book.numberOfPages,
+            publiser: book.publiser,
+            released: book.released
+        }
     }
 }

@@ -4,35 +4,39 @@ import Header from '../header';
 import RandomChar from '../randomChar';
 import ItemList from '../itemList';
 import CharDetails from '../charDetails';
-import GotService from "../../services/gotService";
 
 
-const App = () => {
+export default class App extends React.Component {
+    state = {showRandomCharacter: true}
 
-    const gs = new GotService();
-    gs.getCharacter(Math.floor(Math.random() * 100)).then(x => console.log(x));
-    return (
-        <>
-            <Container>
-                <Header/>
-            </Container>
-            <Container>
-                <Row>
-                    <Col lg={{size: 5, offset: 0}}>
-                        <RandomChar/>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col md='6'>
-                        <ItemList/>
-                    </Col>
-                    <Col md='6'>
-                        <CharDetails/>
-                    </Col>
-                </Row>
-            </Container>
-        </>
-    );
-};
+    toggleRandomCharacter = () => {
+        this.setState(({showRandomCharacter}) => ({showRandomCharacter: !showRandomCharacter}));
+    }
 
-export default App;
+    render() {
+        const {showRandomCharacter} = this.state;
+        return (
+
+            <>
+                <Container>
+                    <Header toggleRandomCharacter={this.toggleRandomCharacter}/>
+                </Container>
+                <Container>
+                    <Row>
+                        <Col lg={{size: 5, offset: 0}}>
+                            {showRandomCharacter ? <RandomChar/> : null}
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col md='6'>
+                            <ItemList/>
+                        </Col>
+                        <Col md='6'>
+                            <CharDetails/>
+                        </Col>
+                    </Row>
+                </Container>
+            </>
+        );
+    }
+}

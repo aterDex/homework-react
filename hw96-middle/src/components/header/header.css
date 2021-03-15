@@ -1,17 +1,17 @@
-headerBlock {
+.headerBlock {
     display: flex;
     justify-content: space-between;
     align-items: center;
     height: 80px;
 }
 
-headerTitle {
+.headerTitle {
     font-size: 24px;
     color: #fff;
     margin: 0;
 }
 
-headerLinks {
+.headerLinks {
     display: flex;
     margin: 0;
     align-items: center;
@@ -19,7 +19,7 @@ headerLinks {
     list-style-type: none;
 }
 
-headerLinks li {
+.headerLinks li {
     margin-right: 20px;
     font-size: 18px;
 }
