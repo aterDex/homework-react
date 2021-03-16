@@ -16,8 +16,17 @@ export default class RandomChar extends Component {
 
     constructor(props) {
         super(props);
-        this.updateCharacter();
+
         this.updateCharacter = this.updateCharacter.bind(this);
+    }
+
+    componentDidMount() {
+        this.updateCharacter();
+        this._tm = setInterval(this.updateCharacter, 5000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this._tm);
     }
 
     onCharLoaded = (char) => {

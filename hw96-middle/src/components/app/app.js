@@ -4,19 +4,21 @@ import Header from '../header';
 import RandomChar from '../randomChar';
 import ItemList from '../itemList';
 import CharDetails from '../charDetails';
+import CharacterPage from "../characterPage";
 
 
 export default class App extends React.Component {
-    state = {showRandomCharacter: true}
+    state = {
+        showRandomCharacter: true
+    }
 
     toggleRandomCharacter = () => {
         this.setState(({showRandomCharacter}) => ({showRandomCharacter: !showRandomCharacter}));
     }
 
     render() {
-        const {showRandomCharacter} = this.state;
+        const {showRandomCharacter, selectChar: char} = this.state;
         return (
-
             <>
                 <Container>
                     <Header toggleRandomCharacter={this.toggleRandomCharacter}/>
@@ -27,14 +29,7 @@ export default class App extends React.Component {
                             {showRandomCharacter ? <RandomChar/> : null}
                         </Col>
                     </Row>
-                    <Row>
-                        <Col md='6'>
-                            <ItemList/>
-                        </Col>
-                        <Col md='6'>
-                            <CharDetails/>
-                        </Col>
-                    </Row>
+                    <CharacterPage/>
                 </Container>
             </>
         );

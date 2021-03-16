@@ -70,6 +70,8 @@ export default class GotService {
 
     _transformCharacter(char) {
         return {
+            id: char.url.replace(/^.*\D(\d+)$/, "$1"),
+            url: char.url,
             name: char.name ? char.name : "Unknown",
             gender: char.gender,
             born: char.born,
