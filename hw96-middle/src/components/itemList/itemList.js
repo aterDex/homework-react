@@ -10,7 +10,7 @@ export default class ItemList extends React.Component {
 
     componentDidMount() {
         const {onData} = this.props;
-        onData({page: 6})
+        onData()
             .then(itemList => {
                 this.setState({itemList});
             }).catch(e => this.onError(e));

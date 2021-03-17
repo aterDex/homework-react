@@ -2,9 +2,9 @@ import React from 'react';
 import {Col, Row, Container} from 'reactstrap';
 import Header from '../header';
 import RandomChar from '../randomChar';
-import ItemList from '../itemList';
-import ItemDetails from '../itemDetails';
-import CharacterPage from "../characterPage";
+import CharacterPage from "../pages/characterPage";
+import BooksPage from "../pages/booksPage";
+import HousesPage from "../pages/housesPage";
 
 
 export default class App extends React.Component {
@@ -30,6 +30,8 @@ export default class App extends React.Component {
                         </Col>
                     </Row>
                     <CharacterPage/>
+                    <BooksPage/>
+                    <HousesPage/>
                 </Container>
             </>
         );

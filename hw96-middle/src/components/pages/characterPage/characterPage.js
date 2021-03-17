@@ -1,9 +1,9 @@
 import React from "react";
-import {Col, Container, Row} from "reactstrap";
-import ItemList from "../itemList";
-import ItemDetails, {RowDetail} from "../itemDetails";
-import ErrorMessage from "../errorMessage/errorMessage";
-import GotService from "../../services/gotService";
+import {Col, Row} from "reactstrap";
+import ItemList from "../../itemList";
+import ItemDetails, {RowDetail} from "../../itemDetails";
+import ErrorMessage from "../../errorMessage/errorMessage";
+import GotService from "../../../services/gotService";
 
 export default class CharacterPage extends React.Component {
 
@@ -14,7 +14,7 @@ export default class CharacterPage extends React.Component {
         error: false
     }
 
-    onCharSelected = (char) => {
+    onCharSelected(char) {
         this.setState({char});
     }
 
@@ -39,8 +39,8 @@ export default class CharacterPage extends React.Component {
         return (<Row>
             <Col md='6'>
                 <ItemList onError={x => this.onError(x)}
-                          onData={x => this.loadData(x)}
-                          onItemSelected={this.onCharSelected}
+                          onData={() => this.loadData({page: 6})}
+                          onItemSelected={x => this.onCharSelected(x)}
                           renderItem={({name, gender}) => `${name} (${gender})`}
                 />
             </Col>

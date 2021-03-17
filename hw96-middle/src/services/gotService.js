@@ -77,27 +77,31 @@ export default class GotService {
             born: char.born,
             died: char.died,
             culture: char.culture
-        })
+        });
     }
 
     transformHouse(house) {
-        return {
+        return this._ems({
+            id: house.url.replace(/^.*\D(\d+)$/, "$1"),
+            url: house.url,
             name: house.name,
             region: house.region,
             words: house.words,
             titles: house.titles,
             overlord: house.overlord,
             ancestralWeapons: house.ancestralWeapons
-        }
+        });
     }
 
     transformBook(book) {
-        return {
+        return this._ems({
+            id: book.url.replace(/^.*\D(\d+)$/, "$1"),
+            url: book.url,
             name: book.name,
             numberOfPages: book.numberOfPages,
-            publiser: book.publiser,
+            publisher: book.publisher,
             released: book.released
-        }
+        });
     }
 
     _ems(obj) {

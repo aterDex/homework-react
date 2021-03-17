@@ -3,6 +3,7 @@ import './randomChar.css';
 import GotService from "../../services/gotService";
 import Spinner from "../spinner/spinner";
 import ErrorMessage from "../errorMessage/errorMessage";
+import ItemDetails, {RowDetail} from "../itemDetails";
 
 export default class RandomChar extends Component {
 
@@ -42,9 +43,9 @@ export default class RandomChar extends Component {
     }
 
     updateCharacter() {
-        // this.gs.getCharacter(Math.floor(Math.random() * 100))
-        //     .then(this.onCharLoaded)
-        //     .catch(this.onError);
+        this.gs.getCharacter(Math.floor(Math.random() * 100))
+            .then(this.onCharLoaded)
+            .catch(this.onError);
     };
 
     render() {
@@ -60,30 +61,13 @@ export default class RandomChar extends Component {
             </div>
         );
     }
-
 }
 
 const View = ({char}) => {
-    const {name, gender, born, died, culture} = char;
-    return <>
-        <h4>Random Character: {name}</h4>
-        <ul className="list-group list-group-flush">
-            <li className="list-group-item d-flex justify-content-between">
-                <span className="term">Gender </span>
-                <span>{gender}</span>
-            </li>
-            <li className="list-group-item d-flex justify-content-between">
-                <span className="term">Born </span>
-                <span>{born}</span>
-            </li>
-            <li className="list-group-item d-flex justify-content-between">
-                <span className="term">Died </span>
-                <span>{died}</span>
-            </li>
-            <li className="list-group-item d-flex justify-content-between">
-                <span className="term">Culture </span>
-                <span>{culture}</span>
-            </li>
-        </ul>
-    </>
+    return <ItemDetails renderHeader={() => `Random Character: ${char.name}`}>
+            <RowDetail label="Gender" item={char} renderItem={x => x.gender}/>
+            <RowDetail label="Born" item={char} renderItem={x => x.born}/>
+            <RowDetail label="Died" item={char} renderItem={x => x.died}/>
+            <RowDetail label="Culture" item={char} renderItem={x => x.culture}/>
+        </ItemDetails>
 }
