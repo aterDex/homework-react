@@ -1,7 +1,7 @@
 import React from "react";
 import {Col, Container, Row} from "reactstrap";
 import ItemList from "../itemList";
-import CharDetails from "../charDetails";
+import ItemDetails, {RowDetail} from "../itemDetails";
 import ErrorMessage from "../errorMessage/errorMessage";
 import GotService from "../../services/gotService";
 
@@ -35,6 +35,7 @@ export default class CharacterPage extends React.Component {
         if (error) {
             return <ErrorMessage/>;
         }
+        const char2 = char || {};
         return (<Row>
             <Col md='6'>
                 <ItemList onError={x => this.onError(x)}
@@ -44,7 +45,12 @@ export default class CharacterPage extends React.Component {
                 />
             </Col>
             <Col md='6'>
-                <CharDetails char={char}/>
+                <ItemDetails renderHeader={() => char2.name}>
+                    <RowDetail label="Gender" item={char2} renderItem={x => x.gender}/>
+                    <RowDetail label="Born" item={char2} renderItem={x => x.born}/>
+                    <RowDetail label="Died" item={char2} renderItem={x => x.died}/>
+                    <RowDetail label="Culture" item={char2} renderItem={x => x.culture}/>
+                </ItemDetails>
             </Col>
         </Row>)
     }
