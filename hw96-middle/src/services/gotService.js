@@ -3,8 +3,8 @@ import path from "path";
 export default class GotService {
     url = "https://www.anapioficeandfire.com/api";
 
-    async _getJson(p = "", prop = {}) {
-        const pr = this._addProp(prop);
+    async getJson(p = "", prop = {}) {
+        const pr = this.addProp(prop);
         const s = path.join(this.url, `${p}${pr ? `?${pr}` : ''}`);
         console.log(s);
         return fetch(s, {
@@ -20,7 +20,7 @@ export default class GotService {
             })
     }
 
-    _addProp(prop) {
+    addProp(prop) {
         const pr = Object.entries(prop);
         if (pr) {
             return pr.reduce((x, y) => {
@@ -34,53 +34,53 @@ export default class GotService {
     }
 
     async getRoot() {
-        return this._getJson()
+        return this.getJson()
     }
 
     async getCharacters(prop) {
-        const chs = await this._getJson("characters", prop);
-        return chs.map(this._transformCharacter);
+        const chs = await this.getJson("characters", prop);
+        return chs.map(x => this.transformCharacter(x));
     }
 
     async getCharacter(num) {
-        const chs = await this._getJson(`characters/${num}`);
-        return this._transformCharacter(chs);
+        const chs = await this.getJson(`characters/${num}`);
+        return this.transformCharacter(chs);
     }
 
     async getHouses(prop) {
-        const chs = await this._getJson("houses", prop);
-        return chs.map(this._transformHouse);
+        const chs = await this.getJson("houses", prop);
+        return chs.map(x => this.transformHouse(x));
     }
 
     async getHouse(num) {
-        const chs = await this._getJson(`houses/${num}`);
-        return this._transformHouse(chs);
+        const chs = await this.getJson(`houses/${num}`);
+        return this.transformHouse(chs);
     }
 
     async getBooks(prop) {
-        const chs = await this._getJson("books", prop);
-        return chs.map(this._transformBook);
+        const chs = await this.getJson("books", prop);
+        return chs.map(x => this.transformBook(x));
     }
 
     async getBook(num) {
-        const chs = await this._getJson(`books/${num}`);
-        return this._transformBook(chs);
+        const chs = await this.getJson(`books/${num}`);
+        return this.transformBook(chs);
     }
 
 
-    _transformCharacter(char) {
-        return {
+    transformCharacter(char) {
+        return this._ems({
             id: char.url.replace(/^.*\D(\d+)$/, "$1"),
             url: char.url,
-            name: char.name ? char.name : "Unknown",
+            name: char.name,
             gender: char.gender,
             born: char.born,
             died: char.died,
             culture: char.culture
-        }
+        })
     }
 
-    _transformHouse(house) {
+    transformHouse(house) {
         return {
             name: house.name,
             region: house.region,
@@ -91,12 +91,25 @@ export default class GotService {
         }
     }
 
-    _transformBook(book) {
+    transformBook(book) {
         return {
             name: book.name,
             numberOfPages: book.numberOfPages,
             publiser: book.publiser,
             released: book.released
+        }
+    }
+
+    _ems(obj) {
+        Object.entries(obj).forEach(x => obj[x[0]] = this._em(x[1]));
+        return obj;
+    }
+
+    _em(val) {
+        if (val) {
+            return val;
+        } else {
+            return "---";
         }
     }
 }

@@ -3,8 +3,11 @@ import {Col, Container, Row} from "reactstrap";
 import ItemList from "../itemList";
 import CharDetails from "../charDetails";
 import ErrorMessage from "../errorMessage/errorMessage";
+import GotService from "../../services/gotService";
 
 export default class CharacterPage extends React.Component {
+
+    _gs = new GotService();
 
     state = {
         char: null,
@@ -16,6 +19,14 @@ export default class CharacterPage extends React.Component {
     }
 
     componentDidCatch(error, errorInfo) {
+        this.onError();
+    }
+
+    loadData(x) {
+        return this._gs.getCharacters(x);
+    }
+
+    onError(e) {
         this.setState({error: true});
     }
 
@@ -24,10 +35,13 @@ export default class CharacterPage extends React.Component {
         if (error) {
             return <ErrorMessage/>;
         }
-
         return (<Row>
             <Col md='6'>
-                <ItemList onCharSelected={this.onCharSelected}/>
+                <ItemList onError={x => this.onError(x)}
+                          onData={x => this.loadData(x)}
+                          onItemSelected={this.onCharSelected}
+                          renderItem={({name, gender}) => `${name} (${gender})`}
+                />
             </Col>
             <Col md='6'>
                 <CharDetails char={char}/>

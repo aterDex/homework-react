@@ -5,7 +5,6 @@ export default class CharDetails extends Component {
 
     constructor(props) {
         super(props);
-        console.log("I create");
     }
 
     render() {

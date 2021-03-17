@@ -1,27 +1,33 @@
 import React from 'react';
 import './itemList.css';
-import GotService from "../../services/gotService";
 import Spinner from "../spinner";
 
 export default class ItemList extends React.Component {
 
-    _gs = new GotService();
-
     state = {
-        charList: null
+        itemList: null
     }
 
     componentDidMount() {
-        this._gs.getCharacters({page: 6})
-            .then((charList) => this.setState({charList}));
+        const {onData} = this.props;
+        onData({page: 6})
+            .then(itemList => {
+                this.setState({itemList});
+            }).catch(e => this.onError(e));
+    }
+
+    onError(e) {
+        this.props.onError(e);
     }
 
     render() {
-        const {onCharSelected} = this.props;
-        const {charList} = this.state;
+        const {onItemSelected} = this.props;
+        const {renderItem} = this.props;
+        const {itemList} = this.state;
 
-        const wait = charList ? null : (<li key="dddddddddd" className="list-group-item"><Spinner/></li>)
-        const body = charList ? charList.map(char => <CharView key={char.id} char={char} onClick={x => onCharSelected(x)}/>) : null;
+        const wait = itemList ? null : (<li key="spinner_li_qcdkpwe21" className="list-group-item"><Spinner/></li>)
+        const body = itemList ? itemList.map(item => <ItemView key={item.id} item={item} renderItem={renderItem}
+                                                               onClick={x => onItemSelected(x)}/>) : null;
         return (
             <ul className="item-list list-group">
                 {wait}
@@ -31,6 +37,6 @@ export default class ItemList extends React.Component {
     }
 }
 
-const CharView = ({char, onClick}) => {
-    return (<li className="list-group-item" onClick={x => onClick(char)}>{char.name}</li>)
+const ItemView = ({item, onClick, renderItem}) => {
+    return (<li className="list-group-item" onClick={x => onClick(item)}>{renderItem(item)}</li>)
 }

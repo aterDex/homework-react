@@ -42,9 +42,9 @@ export default class RandomChar extends Component {
     }
 
     updateCharacter() {
-        this.gs.getCharacter(Math.floor(Math.random() * 100))
-            .then(this.onCharLoaded)
-            .catch(this.onError);
+        // this.gs.getCharacter(Math.floor(Math.random() * 100))
+        //     .then(this.onCharLoaded)
+        //     .catch(this.onError);
     };
 
     render() {
