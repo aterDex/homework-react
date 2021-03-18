@@ -1,28 +1,30 @@
 import React from 'react';
+import {ButtonToggle} from "reactstrap";
+import {Link} from "react-router-dom";
 
 import './header.css';
-import {Button, ButtonToggle} from "reactstrap";
 
-const Header = ({toggleRandomCharacter: toggleRandomCharacter}) => {
+
+const Header = ({toggleRandomCharacter}) => {
     return (
         <div className="headerBlock">
             <h3 className="headerTitle">
-                <a href="#">
+                <Link to='/'>
                     Game of Thrones DB
-                </a>
+                </Link>
             </h3>
             <ButtonToggle onClick={() => toggleRandomCharacter()}>
                 Toggle random character
             </ButtonToggle>
             <ul className="headerLinks">
                 <li>
-                    <a href="#">Characters</a>
+                    <Link to='/characters'>Characters</Link>
                 </li>
                 <li>
-                    <a href="#">Houses</a>
+                    <Link to='/houses'>Houses</Link>
                 </li>
                 <li>
-                    <a href="#">Books</a>
+                    <Link to='/books'>Books</Link>
                 </li>
             </ul>
         </div>

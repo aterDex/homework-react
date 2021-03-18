@@ -17,7 +17,6 @@ export default class RandomChar extends Component {
 
     constructor(props) {
         super(props);
-
         this.updateCharacter = this.updateCharacter.bind(this);
     }
 
@@ -30,8 +29,8 @@ export default class RandomChar extends Component {
         clearInterval(this._tm);
     }
 
-    onCharLoaded = (char) => {
-        this.setState({char, loading: false});
+    onCharLoaded(char) {
+        this.setState({char, loading: false, error: false});
     }
 
     onError = (error) => {
@@ -43,8 +42,9 @@ export default class RandomChar extends Component {
     }
 
     updateCharacter() {
-        this.gs.getCharacter(Math.floor(Math.random() * 100))
-            .then(this.onCharLoaded)
+        this.setState({loading: true, error: false});
+        this.gs.getCharacter(Math.floor(Math.random() * 100 + 1))
+            .then(char => this.onCharLoaded(char))
             .catch(this.onError);
     };
 
@@ -65,9 +65,9 @@ export default class RandomChar extends Component {
 
 const View = ({char}) => {
     return <ItemDetails renderHeader={() => `Random Character: ${char.name}`}>
-            <RowDetail label="Gender" item={char} renderItem={x => x.gender}/>
-            <RowDetail label="Born" item={char} renderItem={x => x.born}/>
-            <RowDetail label="Died" item={char} renderItem={x => x.died}/>
-            <RowDetail label="Culture" item={char} renderItem={x => x.culture}/>
-        </ItemDetails>
+        <RowDetail label="Gender" item={char} renderItem={x => x.gender}/>
+        <RowDetail label="Born" item={char} renderItem={x => x.born}/>
+        <RowDetail label="Died" item={char} renderItem={x => x.died}/>
+        <RowDetail label="Culture" item={char} renderItem={x => x.culture}/>
+    </ItemDetails>
 }
