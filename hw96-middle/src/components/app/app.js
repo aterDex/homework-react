@@ -2,10 +2,9 @@ import React from 'react';
 import {Col, Row, Container} from 'reactstrap';
 import Header from '../header';
 import RandomChar from '../randomChar';
-import CharacterPage from "../pages/characterPage";
-import BooksPage from "../pages/booksPage";
-import HousesPage from "../pages/housesPage";
-import {BrowserRouter as Router, Route} from "react-router-dom";
+import {HousesPage, CharacterPage, BooksPage, BookItem} from "../pages";
+import {BrowserRouter as Router, Route, Switch, Redirect} from "react-router-dom";
+import NotFound from "../notFound";
 
 
 export default class App extends React.Component {
@@ -31,9 +30,27 @@ export default class App extends React.Component {
                                 {showRandomCharacter ? <RandomChar/> : null}
                             </Col>
                         </Row>
-                        <Route path="/characters" component={CharacterPage}/>
-                        <Route path="/books" component={BooksPage}/>
-                        <Route path="/houses" component={HousesPage}/>
+                        <Switch>
+                            <Route path="/characters" exact>
+                                <CharacterPage/>
+                            </Route>
+                            <Route path="/houses" exact>
+                                <HousesPage/>
+                            </Route>
+
+                            <Route path="/books/:id" exact render={({match}) => {
+                                const {id} = match.params;
+                                return <BookItem bookId={id}/>;
+                            }}/>
+                            <Redirect from="/books" strict exact to="/books/"/>
+                            <Route path="/books/" exact>
+                                <BooksPage/>
+                            </Route>
+                            <Route path="/" exact strict/>
+                            <Route>
+                                <NotFound/>
+                            </Route>
+                        </Switch>
                     </Container>
                 </div>
             </Router>

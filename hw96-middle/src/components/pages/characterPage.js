@@ -1,9 +1,10 @@
 import React from "react";
 import {Col, Row} from "reactstrap";
-import ItemList from "../../itemList";
-import ItemDetails, {RowDetail} from "../../itemDetails";
-import ErrorMessage from "../../errorMessage/errorMessage";
-import GotService from "../../../services/gotService";
+import ItemList from "../itemList";
+import ItemDetails, {RowDetail} from "../itemDetails";
+import ErrorMessage from "../errorMessage/errorMessage";
+import GotService from "../../services/gotService";
+import BasePane from "../panes";
 
 export default class CharacterPage extends React.Component {
 
@@ -45,12 +46,14 @@ export default class CharacterPage extends React.Component {
                 />
             </Col>
             <Col md='6'>
-                <ItemDetails renderHeader={() => char2.name}>
-                    <RowDetail label="Gender" item={char2} renderItem={x => x.gender}/>
-                    <RowDetail label="Born" item={char2} renderItem={x => x.born}/>
-                    <RowDetail label="Died" item={char2} renderItem={x => x.died}/>
-                    <RowDetail label="Culture" item={char2} renderItem={x => x.culture}/>
-                </ItemDetails>
+                <BasePane>
+                    <ItemDetails renderHeader={() => char2.name}>
+                        <RowDetail label="Gender" item={char2} renderItem={x => x.gender}/>
+                        <RowDetail label="Born" item={char2} renderItem={x => x.born}/>
+                        <RowDetail label="Died" item={char2} renderItem={x => x.died}/>
+                        <RowDetail label="Culture" item={char2} renderItem={x => x.culture}/>
+                    </ItemDetails>
+                </BasePane>
             </Col>
         </Row>)
     }

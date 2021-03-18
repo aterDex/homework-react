@@ -1,9 +1,10 @@
 import React from "react";
 import {Col, Row} from "reactstrap";
-import ItemList from "../../itemList";
-import ItemDetails, {RowDetail} from "../../itemDetails";
-import ErrorMessage from "../../errorMessage/errorMessage";
-import GotService from "../../../services/gotService";
+import ItemList from "../itemList";
+import ItemDetails, {RowDetail} from "../itemDetails";
+import ErrorMessage from "../errorMessage/errorMessage";
+import GotService from "../../services/gotService";
+import BasePane from "../panes";
 
 export default class HousesPage extends React.Component {
 
@@ -45,13 +46,15 @@ export default class HousesPage extends React.Component {
                 />
             </Col>
             <Col md='6'>
-                <ItemDetails renderHeader={() => house2.name}>
-                    <RowDetail label="Region" item={house2} renderItem={x => x.region}/>
-                    <RowDetail label="Words" item={house2} renderItem={x => x.words}/>
-                    <RowDetail label="Titles" item={house2} renderItem={x => x.titles}/>
-                    <RowDetail label="Overlord" item={house2} renderItem={x => x.overlord}/>
-                    <RowDetail label="Ancestral weapons" item={house2} renderItem={x => x.ancestralWeapons}/>
-                </ItemDetails>
+                <BasePane>
+                    <ItemDetails renderHeader={() => house2.name}>
+                        <RowDetail label="Region" item={house2} renderItem={x => x.region}/>
+                        <RowDetail label="Words" item={house2} renderItem={x => x.words}/>
+                        <RowDetail label="Titles" item={house2} renderItem={x => x.titles}/>
+                        <RowDetail label="Overlord" item={house2} renderItem={x => x.overlord}/>
+                        <RowDetail label="Ancestral weapons" item={house2} renderItem={x => x.ancestralWeapons}/>
+                    </ItemDetails>
+                </BasePane>
             </Col>
         </Row>)
     }

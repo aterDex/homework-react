@@ -4,6 +4,7 @@ import GotService from "../../services/gotService";
 import Spinner from "../spinner/spinner";
 import ErrorMessage from "../errorMessage/errorMessage";
 import ItemDetails, {RowDetail} from "../itemDetails";
+import BasePane from "../panes";
 
 export default class RandomChar extends Component {
 
@@ -22,7 +23,7 @@ export default class RandomChar extends Component {
 
     componentDidMount() {
         this.updateCharacter();
-        this._tm = setInterval(this.updateCharacter, 5000);
+        this._tm = setInterval(this.updateCharacter, 5000000000000000);
     }
 
     componentWillUnmount() {
@@ -54,11 +55,11 @@ export default class RandomChar extends Component {
             err = error ? <ErrorMessage text={errorText}/> : null,
             content = loading || error ? null : <View char={char}/>;
         return (
-            <div className="random-block rounded">
+            <BasePane>
                 {load}
                 {err}
                 {content}
-            </div>
+            </BasePane>
         );
     }
 }

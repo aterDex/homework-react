@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import './itemDetails.css';
 
 const RowDetail = ({label, item, renderItem}) => {
@@ -8,16 +8,16 @@ const RowDetail = ({label, item, renderItem}) => {
     </li>)
 }
 
-export default class ItemDetails extends Component {
+export default class ItemDetails extends React.Component {
     render() {
         const {renderHeader} = this.props;
         return (
-            <div className="char-details rounded">
-                <h4>{renderHeader()}</h4>
+            <>
+                <h4 className="header-item-details">{renderHeader()}</h4>
                 <ul className="list-group list-group-flush">
                     {this.props.children}
                 </ul>
-            </div>
+            </>
         );
     }
 }
