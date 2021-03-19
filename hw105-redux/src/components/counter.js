@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.css';
 import actions from "../actions";
 
-const Counter = ({counter, inc, dec, rnd}) => {
+const Counter = ({counter, inc, dec}) => {
     return (
         <div className="jumbotron">
             <h1>{counter}</h1>
