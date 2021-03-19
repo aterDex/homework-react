@@ -36,7 +36,7 @@ export default class CharacterPage extends React.Component {
         if (error) {
             return <ErrorMessage/>;
         }
-        const char2 = char || {};
+        const content = char ? <CharPane char={char}/> : <h4>Please select character first.</h4>;
         return (<Row>
             <Col md='6'>
                 <ItemList onError={x => this.onError(x)}
@@ -47,14 +47,18 @@ export default class CharacterPage extends React.Component {
             </Col>
             <Col md='6'>
                 <BasePane>
-                    <ItemDetails renderHeader={() => char2.name}>
-                        <RowDetail label="Gender" item={char2} renderItem={x => x.gender}/>
-                        <RowDetail label="Born" item={char2} renderItem={x => x.born}/>
-                        <RowDetail label="Died" item={char2} renderItem={x => x.died}/>
-                        <RowDetail label="Culture" item={char2} renderItem={x => x.culture}/>
-                    </ItemDetails>
+                    {content}
                 </BasePane>
             </Col>
         </Row>)
     }
+}
+
+const CharPane = ({char}) => {
+    return (<ItemDetails renderHeader={() => char.name}>
+        <RowDetail label="Gender" item={char} renderItem={x => x.gender}/>
+        <RowDetail label="Born" item={char} renderItem={x => x.born}/>
+        <RowDetail label="Died" item={char} renderItem={x => x.died}/>
+        <RowDetail label="Culture" item={char} renderItem={x => x.culture}/>
+    </ItemDetails>)
 }

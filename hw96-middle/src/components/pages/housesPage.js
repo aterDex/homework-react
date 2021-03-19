@@ -36,7 +36,7 @@ export default class HousesPage extends React.Component {
         if (error) {
             return <ErrorMessage/>;
         }
-        const house2 = house || {};
+        const content = house ? <HousePane house={house}/> : <h4>Please select character first.</h4>;
         return (<Row>
             <Col md='6'>
                 <ItemList onError={x => this.onError(x)}
@@ -47,15 +47,19 @@ export default class HousesPage extends React.Component {
             </Col>
             <Col md='6'>
                 <BasePane>
-                    <ItemDetails renderHeader={() => house2.name}>
-                        <RowDetail label="Region" item={house2} renderItem={x => x.region}/>
-                        <RowDetail label="Words" item={house2} renderItem={x => x.words}/>
-                        <RowDetail label="Titles" item={house2} renderItem={x => x.titles}/>
-                        <RowDetail label="Overlord" item={house2} renderItem={x => x.overlord}/>
-                        <RowDetail label="Ancestral weapons" item={house2} renderItem={x => x.ancestralWeapons}/>
-                    </ItemDetails>
+                    {content}
                 </BasePane>
             </Col>
         </Row>)
     }
+}
+
+const HousePane = ({house}) => {
+    return (<ItemDetails renderHeader={() => house.name}>
+        <RowDetail label="Region" item={house} renderItem={x => x.region}/>
+        <RowDetail label="Words" item={house} renderItem={x => x.words}/>
+        <RowDetail label="Titles" item={house} renderItem={x => x.titles}/>
+        <RowDetail label="Overlord" item={house} renderItem={x => x.overlord}/>
+        <RowDetail label="Ancestral weapons" item={house} renderItem={x => x.ancestralWeapons}/>
+    </ItemDetails>)
 }
