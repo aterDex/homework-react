@@ -5,8 +5,17 @@ import Spinner from "../spinner/spinner";
 import ErrorMessage from "../errorMessage/errorMessage";
 import ItemDetails, {RowDetail} from "../itemDetails";
 import BasePane from "../panes";
+import PropTypes from "prop-types";
 
 export default class RandomChar extends Component {
+
+    static defaultProps = {
+        updateInterval: 240000
+    }
+
+    static propTypes = {
+        updateInterval: PropTypes.number
+    }
 
     gs = new GotService();
     state = {
@@ -16,14 +25,10 @@ export default class RandomChar extends Component {
         errorText: ""
     }
 
-    constructor(props) {
-        super(props);
-        this.updateCharacter = this.updateCharacter.bind(this);
-    }
-
     componentDidMount() {
         this.updateCharacter();
-        this._tm = setInterval(this.updateCharacter, 5000000000000000);
+        console.log("set interval", this.props.updateInterval)
+        this._tm = setInterval(() => this.updateCharacter(), this.props.updateInterval);
     }
 
     componentWillUnmount() {

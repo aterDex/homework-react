@@ -1,8 +1,22 @@
 import React from 'react';
 import './itemList.css';
 import Spinner from "../spinner";
+import PropTypes from "prop-types";
 
 export default class ItemList extends React.Component {
+
+    static props = {
+        onItemSelected: () => {
+        },
+        renderItem: () => {
+        }
+    }
+
+    static propTypes = {
+        onItemSelected: PropTypes.func,
+        renderItem: PropTypes.func,
+        onData: PropTypes.func.isRequired
+    }
 
     state = {
         itemList: null
