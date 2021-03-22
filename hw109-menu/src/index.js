@@ -12,7 +12,6 @@ import './index.scss';
 
 const restoServices = new RestoService();
 
-
 ReactDOM.render(
     <Provider store={store}>
         <ErrorBoundary>
