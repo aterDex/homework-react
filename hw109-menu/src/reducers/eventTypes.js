@@ -1,0 +1,4 @@
+const ET_RESTO_MENU_LOADED = 'MENU_LOADED';
+
+
+export {ET_RESTO_MENU_LOADED};

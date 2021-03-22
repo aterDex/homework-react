@@ -1,6 +1,7 @@
 import React from 'react';
 import {MainPage, CartPage} from '../pages';
 import AppHeader from '../app-header';
+import WithRestoService from "../hoc";
 
 import Background from './food-bg.jpg';
 
@@ -14,4 +15,4 @@ const App = () => {
     )
 }
 
-export default App;
+export default WithRestoService()(App);
