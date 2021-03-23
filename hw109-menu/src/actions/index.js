@@ -43,11 +43,18 @@ const selectItemDel = (delId, count = 0) => {
     };
 };
 
+const selectItemAllDel = () => {
+    return {
+        type: eventTypes.ET_RESTO_SELECT_ITEM_ALL_DELETE
+    }
+}
+
 export {
     menuLoaded,
     menuStatus,
     itemLoaded,
     itemStatus,
     selectItemAdd,
-    selectItemDel
+    selectItemDel,
+    selectItemAllDel
 };

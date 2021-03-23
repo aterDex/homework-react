@@ -7,14 +7,29 @@ export default class RestoService {
     async getJson(p = "", prop = {}) {
         const pr = this.addProp(prop);
         const s = path.join(this.url, `${p}${pr ? `?${pr}` : ''}`);
-        console.log(s);
+        console.log("get", s);
         return fetch(s)
             .then(data => {
                 if (!data.ok) {
-                    throw new Error(`result ${data.status}:${data.statusText} for url '${this.url}'`);
+                    throw new Error(`result ${data.status}:${data.statusText} for url '${s}'`);
                 }
                 return data.json();
             })
+    }
+
+    async postJson(p = "", prop = {}, jsonBody) {
+        const pr = this.addProp(prop);
+        const s = path.join(this.url, `${p}${pr ? `?${pr}` : ''}`);
+        console.log("post", s);
+        return fetch(s, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: jsonBody ? JSON.stringify(jsonBody) : null
+        }).then(data => {
+            if (!data.ok) {
+                throw new Error(`result ${data.status}:${data.statusText} for url '${s}'`);
+            }
+        })
     }
 
     addProp(prop) {
@@ -37,6 +52,10 @@ export default class RestoService {
     }
 
     async getItem(itemId) {
-        return await this.getJson(`menu/${+itemId}`);
+        return await this.getJson(`/menu/${+itemId}`);
+    }
+
+    async buy(items) {
+        return await this.postJson('/buy', {}, items);
     }
 }

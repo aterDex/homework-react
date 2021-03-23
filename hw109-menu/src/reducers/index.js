@@ -68,6 +68,12 @@ const reducer = (state = initialState, action) => {
                 selectItem: ne,
                 priceTotal: reCalcPrice(ne)
             };
+        case eventTypes.ET_RESTO_SELECT_ITEM_ALL_DELETE:
+            return {
+                ...state,
+                selectItem: [],
+                priceTotal: 0
+            };
         default:
             return state;
     }
