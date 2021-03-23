@@ -2,8 +2,8 @@ import React from 'react';
 import './menu-list-item.scss';
 import {Link} from "react-router-dom";
 
-const MenuListItem = ({menuItem: {id, title, price, url, category, ico}, withoutLink}) => {
-    console.log(withoutLink);
+const MenuListItem = ({menuItem, withoutLink, onAddCard}) => {
+    const {id, title, price, url, category, ico} = menuItem;
     const Ll = withoutLink ? Transit : Link;
     return (
 
@@ -17,7 +17,7 @@ const MenuListItem = ({menuItem: {id, title, price, url, category, ico}, without
             <div className="menu__category">
                 <img className="menu__ico" src={ico} alt={category}/>Category: <span>{category}</span></div>
             <div className="menu__price">Price: <span>{price}$</span></div>
-            <button className="menu__btn">Add to cart</button>
+            <button className="menu__btn" onClick={() => onAddCard(menuItem)}>Add to cart</button>
         </li>
     )
 }

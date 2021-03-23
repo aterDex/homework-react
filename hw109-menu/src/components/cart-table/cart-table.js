@@ -1,20 +1,48 @@
 import React from 'react';
 import './cart-table.scss';
+import {connect} from "react-redux";
 
-const CartTable = () => {
+import {selectItemDel, selectItemAdd} from "../../actions";
+
+const CartTable = ({items = [], onDelete, onAdd}) => {
     return (
         <>
             <div className="cart__title">Ваш заказ:</div>
             <div className="cart__list">
-                <div className="cart__item">
-                    <img src="https://static.1000.menu/img/content/21458/-salat-cezar-s-kr-salat-cezar-s-krevetkami-s-maionezom_1501173720_1_max.jpg" className="cart__item-img" alt="Cesar salad"></img>
-                    <div className="cart__item-title">Cesar salad</div>
-                    <div className="cart__item-price">12$</div>
-                    <div className="cart__close">&times;</div>
-                </div>
+                {
+                    items.map(item => {
+                        const {id, title, price, url, count} = item;
+                        return (
+                            <div key={id} className="cart__item">
+                                <img
+                                    src={url}
+                                    className="cart__item-img" alt={title}></img>
+                                <div className="cart__item-title">{title}</div>
+                                <div className="cart__item-price">{price}$</div>
+                                <div className="cart__item-count">
+                                    <button onClick={() => onAdd(item)} className="cart__item-btn">+</button>
+                                    {count}
+                                    <button onClick={() => onDelete(item, 1)} className="cart__item-btn">-</button>
+                                </div>
+                                <div onClick={() => onDelete(item)} className="cart__close">&times;</div>
+                            </div>
+                        );
+                    })
+                }
             </div>
         </>
     );
 };
 
-export default CartTable;
+const mapStateToProps = (store) => {
+    return {
+        items: store.selectItem
+    };
+}
+
+const mapDispatchToProps = {
+    onDelete: selectItemDel,
+    onAdd: selectItemAdd
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CartTable);

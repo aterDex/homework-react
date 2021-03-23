@@ -28,9 +28,26 @@ const itemStatus = (newStatus) => {
     };
 };
 
+const selectItemAdd = (add) => {
+    return {
+        type: eventTypes.ET_RESTO_SELECT_ITEM_ADD,
+        payload: add
+    };
+};
+
+const selectItemDel = (del, count = 0) => {
+    return {
+        type: eventTypes.ET_RESTO_SELECT_ITEM_DELETE,
+        payload: del,
+        count: count
+    };
+};
+
 export {
     menuLoaded,
     menuStatus,
     itemLoaded,
-    itemStatus
+    itemStatus,
+    selectItemAdd,
+    selectItemDel
 };

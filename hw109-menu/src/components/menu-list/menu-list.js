@@ -4,7 +4,7 @@ import MenuListItem from '../menu-list-item';
 import WithRestoService from '../hoc';
 import Spinner from "../spinner";
 
-import {menuLoaded, menuStatus} from "../../actions";
+import {menuLoaded, menuStatus, selectItemAdd} from "../../actions";
 
 import './menu-list.scss';
 import Error from "../error";
@@ -18,7 +18,7 @@ class MenuList extends Component {
     }
 
     render() {
-        const {menuItems, status} = this.props;
+        const {menuItems, status, selectItemAdd} = this.props;
         switch (status) {
             case 'loading':
                 return <Spinner/>;
@@ -26,7 +26,7 @@ class MenuList extends Component {
                 return (
                     <>
                         <ul className="menu__list">
-                            {menuItems.map(x => <MenuListItem key={x.id} menuItem={x}/>)}
+                            {menuItems.map(x => <MenuListItem key={x.id} menuItem={x} onAddCard={x => selectItemAdd(x)}/>)}
                         </ul>
                     </>
                 );
@@ -44,7 +44,7 @@ const mapStateToProps = (store) => {
 }
 
 const mapDispatchToProps = {
-    menuLoaded, menuStatus
+    menuLoaded, menuStatus, selectItemAdd
 }
 
 export default WithRestoService()(connect(mapStateToProps, mapDispatchToProps)(MenuList));
