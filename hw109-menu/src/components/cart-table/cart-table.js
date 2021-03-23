@@ -22,9 +22,9 @@ const CartTable = ({items = [], onDelete, onAdd}) => {
                                 <div className="cart__item-count">
                                     <button onClick={() => onAdd(item)} className="cart__item-btn">+</button>
                                     {count}
-                                    <button onClick={() => onDelete(item, 1)} className="cart__item-btn">-</button>
+                                    <button onClick={() => onDelete(item.id, 1)} className="cart__item-btn">-</button>
                                 </div>
-                                <div onClick={() => onDelete(item)} className="cart__close">&times;</div>
+                                <div onClick={() => onDelete(item.id)} className="cart__close">&times;</div>
                             </div>
                         );
                     })

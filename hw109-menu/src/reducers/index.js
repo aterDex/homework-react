@@ -5,7 +5,8 @@ const initialState = {
     status: 'loading',
     item: undefined,
     itemStatus: 'loading',
-    selectItem: []
+    selectItem: [],
+    priceTotal: 0
 }
 
 const reducer = (state = initialState, action) => {
@@ -45,27 +46,36 @@ const reducer = (state = initialState, action) => {
 
             return {
                 ...state,
-                selectItem: si
+                selectItem: si,
+                priceTotal: reCalcPrice(si)
             };
         case eventTypes.ET_RESTO_SELECT_ITEM_DELETE:
             const remove = action.count;
             if (remove && remove > 0) {
-                const f = state.selectItem.find(x => x.id === payload.id);
+                const f = state.selectItem.find(x => x.id === payload);
                 console.log("rem", remove, f.count);
                 if (remove < f.count) {
+                    const ne = state.selectItem.map(x => x !== f ? x : {...x, count: x.count - remove});
                     return {
                         ...state,
-                        selectItem: state.selectItem.map(x => x !== f ? x : {...x, count: x.count - remove})
+                        selectItem: ne,
+                        priceTotal: reCalcPrice(ne)
                     };
                 }
             }
+            const ne = state.selectItem.filter(x => x.id !== payload);
             return {
                 ...state,
-                selectItem: state.selectItem.filter(x => x.id !== payload.id)
+                selectItem: ne,
+                priceTotal: reCalcPrice(ne)
             };
         default:
             return state;
     }
+}
+
+function reCalcPrice(items) {
+    return items.reduce((x, y) => x + +y.price * +y.count, 0);
 }
 
 function itemToSelectItem(item) {

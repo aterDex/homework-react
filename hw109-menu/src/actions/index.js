@@ -35,10 +35,10 @@ const selectItemAdd = (add) => {
     };
 };
 
-const selectItemDel = (del, count = 0) => {
+const selectItemDel = (delId, count = 0) => {
     return {
         type: eventTypes.ET_RESTO_SELECT_ITEM_DELETE,
-        payload: del,
+        payload: delId,
         count: count
     };
 };

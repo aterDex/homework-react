@@ -3,14 +3,13 @@ import {connect} from "react-redux";
 
 import AppHeader from "./app-header";
 
-const AppHeaderRedux = ({items = []}) => {
-    const total = items.reduce((x, y) => x + +y.price * +y.count, 0);
+const AppHeaderRedux = ({total}) => {
     return <AppHeader total={total}/>;
 };
 
 const mapStateToProps = (store) => {
     return {
-        items: store.selectItem
+        total: store.priceTotal
     };
 }
 
