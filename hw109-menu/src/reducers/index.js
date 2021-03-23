@@ -53,7 +53,6 @@ const reducer = (state = initialState, action) => {
             const remove = action.count;
             if (remove && remove > 0) {
                 const f = state.selectItem.find(x => x.id === payload);
-                console.log("rem", remove, f.count);
                 if (remove < f.count) {
                     const ne = state.selectItem.map(x => x !== f ? x : {...x, count: x.count - remove});
                     return {
