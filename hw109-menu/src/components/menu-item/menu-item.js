@@ -4,7 +4,7 @@ import MenuListItem from "../menu-list-item";
 import "./menu-item.scss"
 import WithRestoService from "../hoc";
 import {connect} from "react-redux";
-import {itemLoaded, itemStatus} from "../../actions";
+import {itemLoaded, itemStatus, selectItemAdd} from "../../actions";
 import Spinner from "../spinner";
 import Error from "../error";
 
@@ -17,14 +17,14 @@ class MenuItem extends React.Component {
     }
 
     render() {
-        const {item, status} = this.props;
+        const {item, status, selectItemAdd} = this.props;
         switch (status) {
             case 'loading':
                 return <Spinner/>;
             case 'done':
                 return (
                     <ul className="menu_s__item">
-                        <MenuListItem menuItem={item} withoutLink/>
+                        <MenuListItem menuItem={item} withoutLink onAddCard={selectItemAdd}/>
                     </ul>
                 )
             default:
@@ -41,7 +41,7 @@ const mapStateToProps = (store) => {
 }
 
 const mapDispatchToProps = {
-    itemLoaded, itemStatus
+    itemLoaded, itemStatus, selectItemAdd
 }
 
 export default WithRestoService()(connect(mapStateToProps, mapDispatchToProps)(MenuItem));
