@@ -19,6 +19,10 @@ app.get('/api/resto/menu', (req, res) => {
     res.sendFile('db.json', optForStore);
 })
 
+app.get('/api/resto/menu/:id', (req, res) => {
+    res.send(db.find('/menu', x => x.id == req.params.id));
+})
+
 app.listen(port, host);
 
 console.log(`Start server on http://${host}:${port}`)
